@@ -102,6 +102,7 @@ export function initializeMockData() {
   if (typeof window === "undefined") return
 
   const existingUsers = getAllUsers()
+  // Only initialize if no users exist AND no current user is logged in
   if (existingUsers.length > 0) return
 
   const now = Date.now()

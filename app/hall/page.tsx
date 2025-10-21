@@ -23,7 +23,7 @@ export default function HallOfFamePage() {
       <Navigation />
 
       <div className="px-6 py-12">
-        <div className="max-w-7xl mx-auto mb-12">
+        <div className="max-w-7xl mx-auto mb-12 text-center">
           <h1 className="text-5xl font-serif text-[#37322F] mb-4">Hall of Fame</h1>
           <p className="text-lg text-[#605A57]">Discover the builders shaping the future</p>
         </div>
@@ -44,8 +44,8 @@ export default function HallOfFamePage() {
                     <div className="text-5xl font-semibold text-[#37322F]">{user.displayName.charAt(0)}</div>
                   </div>
 
-                  {/* Info - Hidden by default, shown on hover */}
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {/* Info - Always visible and centered */}
+                  <div className="text-center">
                     <h3 className="font-semibold text-[#37322F] text-sm mb-1 truncate">{user.displayName}</h3>
                     <p className="text-xs text-[#605A57] mb-3 line-clamp-2">{user.bio}</p>
 

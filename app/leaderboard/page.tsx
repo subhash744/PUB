@@ -22,8 +22,11 @@ export default function LeaderboardPage() {
     updateStreaks()
     const user = getCurrentUser()
     setCurrentUser(user)
-    updateLeaderboard("all-time")
-    setFeatured(getFeaturedBuilders())
+    // Only show leaderboard data if user is logged in
+    if (user) {
+      updateLeaderboard("all-time")
+      setFeatured(getFeaturedBuilders())
+    }
   }, [])
 
   const updateLeaderboard = (sort: SortBy) => {
@@ -33,6 +36,29 @@ export default function LeaderboardPage() {
   }
 
   if (!mounted) return null
+
+  // If user is not logged in, show login prompt
+  if (!currentUser) {
+    return (
+      <div className="w-full min-h-screen bg-[#F7F5F3] flex flex-col">
+        <Navigation />
+        <div className="flex-1 flex flex-col items-center justify-center px-6 py-20">
+          <div className="max-w-md text-center">
+            <h1 className="text-4xl font-serif text-[#37322F] mb-4">Welcome to the Leaderboard</h1>
+            <p className="text-lg text-[#605A57] mb-8">
+              Please log in or create a profile to view the leaderboard and compete with other builders.
+            </p>
+            <button
+              onClick={() => router.push("/")}
+              className="px-8 py-3 bg-[#37322F] text-white rounded-full font-medium hover:bg-[#2a2520] transition"
+            >
+              Get Started
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="w-full min-h-screen bg-[#F7F5F3] flex flex-col">
@@ -70,6 +96,28 @@ export default function LeaderboardPage() {
       <div className="border-b border-[rgba(55,50,47,0.12)] px-6 flex gap-8">
         {(["today", "yesterday", "all-time", "newcomers"] as const).map((tab) => (
           <button
+            key={tab}
+            onClick={() => updateLeaderboard(tab)}
+            className={`py-4 px-2 font-medium transition border-b-2 ${
+              sortBy === tab
+                ? "border-[#37322F] text-[#37322F]"
+                : "border-transparent text-[#605A57] hover:text-[#37322F]"
+            }`}
+          >
+            {tab.charAt(0).toUpperCase() + tab.slice(1).replace("-", " ")}
+          </button>
+        ))}
+      </div>
+
+      {/* Leaderboard Table */}
+      <div className="flex-1 px-6 py-8">
+        <div className="max-w-6xl mx-auto">
+          <LeaderboardTable entries={leaderboard} currentUserId={currentUser?.id} />
+        </div>
+      </div>
+    </div>
+  )
+}
             key={tab}
             onClick={() => updateLeaderboard(tab)}
             className={`py-4 px-2 font-medium transition border-b-2 ${
